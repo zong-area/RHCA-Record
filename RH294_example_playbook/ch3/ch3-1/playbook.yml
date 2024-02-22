@@ -1,0 +1,55 @@
+---
+- name: deploy 3-1 variable
+  hosts: webserver
+  become: true
+  vars:
+    web_pkg: httpd
+    firewall_pkg: firewalld
+    web_service: httpd
+    firewall_service: firewalld
+    python_pkg: python3-PyMySQL
+    rule: http
+
+  tasks:
+    - name: install end ensure package is install
+      ansible.builtin.dnf:
+        name:
+          - "{{ web_pkg }}"
+          - "{{ firewall_pkg }}"
+          - "{{ python_pkg }}"
+        state: present
+
+    - name: enable firewall service
+      ansible.builtin.service:
+        name: "{{ firewall_service }}"
+        state: started
+        enabled: yes
+
+    - name: web index.html create
+      ansible.builtin.copy:
+        content: "ensure web service work"
+        dest: /var/www/html/index.html
+
+    - name: enable  web service
+      ansible.builtin.service:
+        name: "{{ web_service }}"
+        state: started
+        enabled: yes
+
+    - name: firewall {{ rule }} rule  allow
+      ansible.posix.firewalld:
+        service: "{{ rule }}"
+        permanent: true
+        state: enabled
+        immediate: true
+
+- name: use uri module test connected
+  hosts: localhost
+  become: false
+
+  tasks:
+    - name: use uri module test {{ web_service }} is work
+      ansible.builtin.uri:
+        url: http://node1.example.com
+        status_code: 200
+...
