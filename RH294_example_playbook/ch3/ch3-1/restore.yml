@@ -1,0 +1,22 @@
+---
+- name: restore to init state
+  hosts: webs
+  become: true
+  vars:
+    web_pkg: httpd
+    firewall_service: firewalld
+    rule: http
+
+  tasks:
+    - name: remove web service
+      ansible.builtin.dnf:
+        name: "{{ web_pkg }}"
+        state: absent
+
+    - name: remove web rule
+      ansible.posix.firewalld:
+        service: "{{ rule }}"
+        permanent: true
+        state: disabled
+        immediate: true
+...
