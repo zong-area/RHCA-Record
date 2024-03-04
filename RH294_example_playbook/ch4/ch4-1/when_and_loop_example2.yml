@@ -1,0 +1,22 @@
+---
+- name: check httpd is install or not
+  hosts: dev
+  become: true
+  vars:
+    web: httpd
+
+  tasks:
+    - name: check {{ web }} packages is installs
+      command: /usr/bin/rpm -qa "{{ web }}"
+      ignore_errors: yes
+      register: httpd_status
+
+    - name: output httpd_status var
+      ansible.builtin.debug:
+        msg: this output rc "{{ httpd_status.stderr_lines }}"
+
+    - name: install
+      ansible.builtin.dnf:
+        name: "{{ web }}"
+        state: present
+      when: httpd_status.stderr_lines == []
