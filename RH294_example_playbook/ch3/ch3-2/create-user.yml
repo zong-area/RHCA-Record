@@ -1,0 +1,13 @@
+---
+- name: 3-2 tes
+  hosts: devservers
+  become: true
+  remote_user: student
+  vars_files:
+    - secret.yml
+
+  tasks:
+    - name: create secret file user and password
+      ansible.builtin.user:
+        name: "{{ username }}"
+        password: "{{ pwhash }}"
