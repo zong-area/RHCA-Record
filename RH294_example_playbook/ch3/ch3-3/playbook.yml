@@ -1,0 +1,22 @@
+---
+- name: create custom fact directory and display custom variable
+  hosts: webserver
+  become: true
+
+  tasks:
+    - name: confirm curent fact.d direct
+      ansible.builtin.file:
+        path: /etc/ansible/facts.d
+        state: directory
+        mode: '0755'
+        recurse: yes
+
+    - name: copy file in facts.d directory
+      ansible.builtin.copy:
+        src:  custom.fact
+        dest: /etc/ansible/facts.d
+
+    - name: install required packages
+      ansible.builtin.dnf:
+        name: "{{ ansible_facts.ansible_local.custom.general.package }}"
+        state: present
