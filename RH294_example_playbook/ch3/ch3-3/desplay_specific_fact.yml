@@ -1,0 +1,13 @@
+---
+- name: display specific host fact information
+  hosts: webserver
+  become: true
+
+  tasks:
+    - name: display host fact
+      ansible.builtin.debug:
+        msg: Host "{{ ansible_facts.fqdn }}" with python version "{{ ansible_facts.python_version }}" has "{{ ansible_facts.processor_count }}" processes and "{{ ansible_facts.memtotal_mb }}" Mib can use in system
+
+    - name: display local ansible_facts
+      ansible.builtin.debug:
+        msg: the ansible_local variable is set to "{{ ansible_facts.ansible_local }}"
