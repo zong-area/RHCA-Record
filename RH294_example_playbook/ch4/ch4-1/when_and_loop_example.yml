@@ -1,0 +1,27 @@
+---
+- name: restart httpd
+  hosts: dev
+  become: true
+
+  tasks:
+    - name: get httpd status
+      ansible.builtin.service:
+        name: httpd
+        state: started
+      ignore_errors: yes
+      register: httpd_status
+
+    - name: output
+      ansible.builtin.debug:
+        msg: "the work of rc is {{ httpd_status.changed }}"
+
+    - name: install httpd
+      ansible.builtin.dnf:
+        name: httpd
+        state: present
+      when: httpd_status.changed == false
+      register: install
+    
+    - name: output install httpd result
+      ansible.builtin.debug:
+        var: install
