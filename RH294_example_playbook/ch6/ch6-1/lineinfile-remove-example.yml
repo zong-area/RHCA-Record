@@ -1,0 +1,11 @@
+---
+- name: lineinfile module example
+  hosts: dev
+  become: true
+
+  tasks:
+    - name: absent host 127.0.01
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        regexp: '^127.0.0.1'
+        state: absent
