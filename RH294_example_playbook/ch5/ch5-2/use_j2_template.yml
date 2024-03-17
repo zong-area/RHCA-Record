@@ -1,0 +1,10 @@
+---
+- name: test use j2
+  hosts: dev
+  become: true
+
+  tasks:
+    - name: use j2 profile
+      ansible.builtin.template:
+        src: j2_example.j2
+        dest: "/home/{{ ansible_facts.env.SUDO_USER }}/hosts"
