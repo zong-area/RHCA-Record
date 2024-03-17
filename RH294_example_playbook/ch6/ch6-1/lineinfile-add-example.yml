@@ -1,0 +1,12 @@
+---
+- name: add text content in file
+  hosts: dev
+  become: true
+
+  tasks:
+    - name: add content to /etc/hosts
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        regexp: '^127\.0\.0\.1'
+        line: 127.0.0.1 localhost  localhost.localdomain localhost4 localhost4.localdomain4
+        state: present
