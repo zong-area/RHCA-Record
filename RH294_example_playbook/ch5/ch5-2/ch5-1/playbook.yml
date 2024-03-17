@@ -1,0 +1,14 @@
+---
+- name:
+  hosts: all
+  become: true
+
+  tasks:
+    - name: copy file to remote host
+      ansible.builtin.copy:
+        src: files/users.txt
+        dest: /home/student/users.txt
+        owner: student
+        group: student
+        mode: 0667
+        setype: samba_share_t
