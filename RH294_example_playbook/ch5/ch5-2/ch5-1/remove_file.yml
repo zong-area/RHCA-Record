@@ -1,0 +1,10 @@
+---
+- name: use file module remove file
+  hosts: all
+  become: true
+
+  tasks:
+    - name: file moudle remove file
+      ansible.builtin.file:
+        path: "/home/{{ ansible_facts.env.SUDO_USER }}/users.txt"
+        state: absent
