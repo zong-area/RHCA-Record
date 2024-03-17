@@ -1,6 +1,6 @@
 ---
 - name: include and import example test task
-  hosts: node1.example.com
+  hosts: node1
   become: true
 
   tasks:
@@ -20,7 +20,7 @@
           - https
           
     - name: import the placeholder task file and set variables
-      import_tasks: tasks/placeholder.yml
+      import_tasks: tasks/sholder.yml
       vars:
         file: /var/www/html/index.html
 
