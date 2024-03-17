@@ -1,0 +1,11 @@
+---
+- name: add line to file
+  hosts: all
+  become: true
+
+  tasks:
+    - name: add sign line in file
+      ansible.builtin.lineinfile:
+        path: /home/student/users.txt
+        line: this line is add from lineinfile module
+        state: present
